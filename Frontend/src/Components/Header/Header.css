@@ -4,8 +4,9 @@
 }
 .navOptions a{
     text-decoration: none;
-    color: rgb(199, 160, 31);
+    color: rgb(248, 245, 214);
     margin-left: 5px;
+    
     
 }
 
@@ -27,11 +28,17 @@
     display: flex;
     height: 11vh;
     width: 100%;
-    background-color: rgb(12, 48, 78);
+    background-color: rgb(0, 0, 0);
     border: 2px solid rgba(10, 10, 5, 0.842);
     color:aliceblue;
-    font-size: 5vh;
+    font-size: 24px;
     align-items: center;
- 
+    justify-content: space-between;
 
+}
+
+#navSecondDiv{
+    display: flex;
+    margin-left: 20px;
+    width: 800px;
 }
