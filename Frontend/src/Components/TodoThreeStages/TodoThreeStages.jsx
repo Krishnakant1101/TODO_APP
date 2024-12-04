@@ -164,7 +164,7 @@ function TodoThreeStages() {
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="container-fluid min-vh-100  pt-4"
-      style={{backgroundColor:"#8a8f42"}}>
+      style={{backgroundColor:"#cce0e0"}}>
         <div className="text-center mb-4">
           <button
             className="btn btn-primary"

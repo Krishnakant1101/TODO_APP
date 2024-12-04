@@ -4,13 +4,13 @@
 }
 .navOptions a{
     text-decoration: none;
-    color: rgb(77, 72, 11);
+    color: rgb(199, 160, 31);
     margin-left: 5px;
     
 }
 
 .navOptions a:hover {
-    color: rgb(141, 67, 15) !important;
+    color: rgb(255, 243, 234) !important;
   }
   
 .active{
@@ -27,9 +27,9 @@
     display: flex;
     height: 11vh;
     width: 100%;
-    background-color: rgb(96, 130, 243);
-    border: 2px solid rgba(208, 221, 18, 0.842);
-   
+    background-color: rgb(12, 48, 78);
+    border: 2px solid rgba(10, 10, 5, 0.842);
+    color:aliceblue;
     font-size: 5vh;
     align-items: center;
  
