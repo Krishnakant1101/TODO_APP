@@ -6,6 +6,8 @@ import { Provider } from 'react-redux'
 import { createBrowserRouter,RouterProvider } from 'react-router-dom';
 import CounterApp from './Components/CounterApp/CounterApp.jsx';
 import TodoApp from './Components/TodoApp/TodoApp.jsx';
+import UserDataTable from './Components/UserDataTable/UserDataTable.jsx';
+import LoginPage from './Components/LoginPage/LoginPage.jsx';
 
 const Router=createBrowserRouter([
   {
@@ -19,6 +21,14 @@ const Router=createBrowserRouter([
       {
         path:'/CounterApp',
         element:<CounterApp/>
+      },
+      {
+        path:'/UserDataTable',
+        element:<UserDataTable/>
+      },
+      {
+        path:'/Login',
+        element:<LoginPage/>
       }
     ]
   }

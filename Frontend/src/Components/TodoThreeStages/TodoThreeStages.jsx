@@ -13,8 +13,12 @@ function Task({ task, onEdit, onDelete }) {
   });
 
   return (
-    <div ref={dragRef} className="p-3 mb-2 border rounded bg-white shadow-sm">
-      <strong>{task.title}</strong>
+    <div ref={dragRef} className="p-3 mb-2 border rounded shadow-sm" style={{
+      background : task.stage==="todo" ? "rgb(144 218 245)" :(task.stage==='in-process')?"rgb(237 202 56)":"rgb(150 199 134)"
+    }}
+           >
+      <h4 className="text-center">{task.title}</h4>
+     
       <p>{task.description}</p>
       <div className="d-flex justify-content-end mt-2">
         <button
@@ -44,12 +48,12 @@ function Stage({ stage, tasks, onDrop, onEdit, onDelete }) {
   return (
     <div
       ref={dropRef}
-      className={`p-3 rounded bg-light shadow ${
+      className={`p-3 rounded  bg-light shadow ${
         tasks.length === 0
           ? "min-vh-50 d-flex align-items-center justify-content-center"
           : "min-vh-50"
       }`}
-    >
+    style={{minHeight:"400px"}} >
       {tasks.length > 0 ? (
         tasks.map((task) => (
           <Task
@@ -74,49 +78,60 @@ function TodoThreeStages() {
   const [formOpen, setFormOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
 
-  // Fetch tasks from the backend
-  // useEffect(() => {
-  //   fetchTasks();
-  // }, []);
+  
+  useEffect(() => {
+    fetchTasks();
+  }, []);
 
-  // const fetchTasks = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const response = await fetch("http://localhost:5000/tasks");
-  //     if (!response.ok) throw new Error("Failed to fetch tasks");
-  //     const data = await response.json();
-  //     setTasks(data);
-  //   } catch (err) {
-  //     console.error(err);
-  //     setError(err.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+  const fetchTasks = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("http://localhost:5000/tasks");
+      if (!response.ok) throw new Error("Failed to fetch tasks");
+      const data = await response.json();
+      setTasks(data);
+    } catch (err) {
+      console.error(err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleTaskCreated = (newTask) => {
     setTasks((prevTasks) => [...prevTasks, newTask]);
   };
-
   const handleDrop = (id, newStage) => {
+  
     fetch(`http://localhost:5000/tasks/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ stage: newStage }),
+      body: JSON.stringify({ stage: newStage }), 
     })
       .then((res) => {
-        if (!res.ok) throw new Error("Failed to update task");
-        return res.json();
+        if (!res.ok) {
+     
+          return res.text().then((message) => {
+            throw new Error(`Server error: ${message}`);
+          });
+        }
+        return res.json(); // Parse JSON if request succeeds
       })
       .then((updatedTask) => {
+        console.log("Task updated successfully:", updatedTask);
+  
+        // Update the task in the local state
         setTasks((prevTasks) =>
           prevTasks.map((task) =>
             task.id === updatedTask.id ? updatedTask : task
           )
         );
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error("Failed to update task:", err.message);
+      });
   };
+  
 
   const handleDelete = (id) => {
     fetch(`http://localhost:5000/tasks/${id}`, { method: "DELETE" })
@@ -158,16 +173,18 @@ function TodoThreeStages() {
     complete: tasks.filter((task) => task.stage === "complete"),
   };
 
-  // if (loading) return <div className="text-center mt-5">Loading tasks...</div>;
-  // if (error) return <div className="text-center mt-5 text-danger">{error}</div>;
+  if (loading) return <div className="text-center mt-5">Loading tasks...</div>;
+  if (error) return <div className="text-center mt-5 text-danger">{error}</div>;
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="container-fluid min-vh-100  pt-4"
-      style={{backgroundColor:"#cce0e0"}}>
-        <div className="text-center mb-4">
+      <div className="container-fluid min-vh-100  pb-5 pt-4"
+      style={{backgroundColor:"#bcb8db"}}>
+
+        <div className="text-center mb-4 mt-4">
           <button
-            className="btn btn-primary"
+            className="btn bg-primary text-light"
+            
             onClick={() => setFormOpen(true)}
           >
             Add New Task
@@ -263,7 +280,7 @@ function TodoThreeStages() {
                       : "bg-success"
                   } text-white`}
                 >
-                  <h5>{stage.replace("-", " ").toUpperCase()}</h5>
+                  <h5 className="text-center" style={{color:"#010308"}}>{(stage!=="in-process")? stage.replace("-", " ").toUpperCase():"IN-PROGRESS"}</h5>
                 </div>
                 <Stage
                   stage={stage}

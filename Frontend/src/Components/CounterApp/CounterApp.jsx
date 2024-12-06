@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from "@mui/material/Typography";
 import { Decrement, Increment } from '../TodoCounterSlice/TodoCounterSlice';
 import { useSelector, useDispatch } from 'react-redux';
+import './CounterApp.css'
 
 function CounterApp() {
     const countValue = useSelector((state) => state.Data.count);
@@ -10,7 +11,7 @@ function CounterApp() {
     const Dispatch = useDispatch();
 
     return (
-        <>
+        <>   <div id='parentDiv'>
                 <Box
                     sx={{
                         border: "1px solid wheat", height: "500px", width: "500px",
@@ -45,6 +46,7 @@ function CounterApp() {
                         </Button>
                     </Box>
                 </Box>
+                </div>
             
         </>
     );

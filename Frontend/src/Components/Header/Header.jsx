@@ -32,14 +32,14 @@ function Header() {
 
                     <div className='navOptions'>
                        
-                       <NavLink to='/CounterApp' className={({isActive})=>(isActive?'active':"")}>
-                           Table
+                       <NavLink to='/UserDataTable' className={({isActive})=>(isActive?'active':"")}>
+                           UserTable
                        </NavLink>
                    </div>
 
                    <div className='navOptions'>
                        
-                       <NavLink to='/CounterApp' className={({isActive})=>(isActive?'active':"")}>
+                       <NavLink to='/Login' className={({isActive})=>(isActive?'active':"")}>
                            Login
                        </NavLink>
                    </div>

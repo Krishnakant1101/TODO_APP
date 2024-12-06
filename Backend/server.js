@@ -13,13 +13,12 @@ app.use(bodyParser.json());
 
 
 const pool = new Pool({
-    user: 'todo_user',
-    host: 'localhost',
-    database: 'todo_app',
-    password: 'Ak47@kissu11@',
+    database: 'postgres', // The database name
     port: 5432,
-});
-
+    host: 'localhost',
+    user: 'todo_user', // The user you created
+    password: 'Ak47@kissu11@', // The user's password
+  });
 
 
 
@@ -51,14 +50,21 @@ app.post('/tasks', async (req, res) => {
     }
 });
 
+app.post('/login',(req,res)=>{
+    const userData=req.body;
+    console.log("userData i reach to server and data is : ",userData);
+    res.send();
+})
+
 
 app.put('/tasks/:id', async (req, res) => {
     const { id } = req.params;
-    const { title, description, stage } = req.body;
+    const { stage } = req.body;
+    const taskId=parseInt(id);
     try {
         const result = await pool.query(
-            'UPDATE tasks SET title = $1, description = $2, stage = $3 WHERE id = $4 RETURNING *',
-            [title, description, stage, id]
+            'UPDATE tasks SET stage = $1 WHERE id = $2 RETURNING *',
+            [stage, taskId]
         );
         if (result.rows.length === 0) {
             res.status(404);
@@ -93,3 +99,9 @@ app.delete('/tasks/:id', async (req, res) => {
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });
+
+
+
+
+
+
