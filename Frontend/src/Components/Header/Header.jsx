@@ -1,55 +1,79 @@
+import React from 'react';
 import Box from '@mui/material/Box';
+import { AppBar, Toolbar, Typography, Button } from '@mui/material';
+import { NavLink, useNavigate } from 'react-router-dom';
 import './Header.css';
-import TodoIcon from "../../Images/to-do-list.png";
-import counterIcon from "../../Images/counter.png";
-import {NavLink } from 'react-router-dom';
+
 function Header() {
+    const navigate = useNavigate();
+
+    // Check if user is authenticated by looking for the token
+    const isAuthenticated = !!localStorage.getItem('userToken');
+
+    // Logout handler
+    const handleLogout = () => {
+        localStorage.removeItem('userToken'); // Remove the token
+        navigate('/Login'); // Redirect to the login page
+    };
+
     return (
-        <>
-            <Box
-                sx={{
-                     width: "100%",
-                    backgroundColor: "#8a8f42", display: "flex",
-                     justifyContent: "center",
-                
-                }}>
-                  
-                <div id='navBar'>
+        <AppBar position="static" sx={{ backgroundColor: '#8a8f42' }}>
+            <Toolbar>
+                {/* Logo */}
+                <img
+                    src="https://cdn-icons-png.flaticon.com/256/6782/6782237.png"
+                    alt="Logo"
+                    height="50px"
+                    style={{
+                        marginRight: '20px',
+                        filter: 'sepia(50%) brightness(1.2) hue-rotate(40deg)',
+                    }}
+                />
 
-                <img src={"https://cdn-icons-png.flaticon.com/256/6782/6782237.png"}  style={{marginLeft:"30px",filter: "sepia(50%) brightness(1.2) hue-rotate(40deg)"}} height={"120px"}/>
-                   
-                   <div id='navSecondDiv'>
-                    <div className='navOptions'>
-                   
-                        <NavLink to='/' className={({ isActive }) => (isActive ? 'active' : '')}> TodoApp </NavLink>
-                    </div>
-                    <div className='navOptions'>
-                       
-                        <NavLink to='/CounterApp' className={({isActive})=>(isActive?'active':"")}>
-                            CounterApp
+                {/* App Title */}
+                <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                    MyApp
+                </Typography>
+
+                {/* Navigation Links */}
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <NavLink
+                        to="/"
+                        className={({ isActive }) => (isActive ? 'navLink active' : 'navLink')}
+                    >
+                        TodoApp
+                    </NavLink>
+                    <NavLink
+                        to="/CounterApp"
+                        className={({ isActive }) => (isActive ? 'navLink active' : 'navLink')}
+                    >
+                        CounterApp
+                    </NavLink>
+                    <NavLink
+                        to="/UserDataTable"
+                        className={({ isActive }) => (isActive ? 'navLink active' : 'navLink')}
+                    >
+                        UserTable
+                    </NavLink>
+                    {isAuthenticated ? (
+                        <Button
+                            onClick={handleLogout}
+                            sx={{ color: '#fff', textTransform: 'none', fontWeight: 'bold' }}
+                        >
+                            Logout
+                        </Button>
+                    ) : (
+                        <NavLink
+                            to="/Login"
+                            className={({ isActive }) => (isActive ? 'navLink active' : 'navLink')}
+                        >
+                            Login
                         </NavLink>
-                    </div>
-
-                    <div className='navOptions'>
-                       
-                       <NavLink to='/UserDataTable' className={({isActive})=>(isActive?'active':"")}>
-                           UserTable
-                       </NavLink>
-                   </div>
-
-                   <div className='navOptions'>
-                       
-                       <NavLink to='/Login' className={({isActive})=>(isActive?'active':"")}>
-                           Login
-                       </NavLink>
-                   </div>
-                   </div>
-                </div>
-
-            </Box>
-        
-           </>
-    )
+                    )}
+                </Box>
+            </Toolbar>
+        </AppBar>
+    );
 }
 
-export default Header;    
+export default Header;

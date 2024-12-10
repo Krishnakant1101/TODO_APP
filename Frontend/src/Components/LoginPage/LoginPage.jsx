@@ -1,23 +1,46 @@
-import React from 'react';
-import './LoginPage'
+import React, { useState } from 'react';
+import './LoginPage.css';
+import { Link, useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
-  const handleLogin = (event) => {
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogin = async (event) => {
     event.preventDefault();
-    const userData={
-      userName:event.target[0].value,
-      password:event.target[1].value
-    }
-   const p= fetch("http://localhost:5000/login",
-      {
+    setError('');
+    setLoading(true);
+
+    const userData = {
+      username: event.target.email.value,
+      password: event.target.password.value,
+    };
+    
+
+    try {
+      const response = await fetch("http://localhost:5000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(userData)
+        body: JSON.stringify(userData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Save JWT token to localStorage
+        localStorage.setItem('userToken', data.token);
+        navigate('/'); // Redirect to the homepage
+      } else {
+        setError(data.message || 'Login failed. Please try again.');
       }
-    )
-    
+    } catch (err) {
+      setError('An error occurred. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -25,6 +48,7 @@ const LoginPage = () => {
       <div className="card shadow-lg" style={{ width: '400px' }}>
         <div className="card-body">
           <h3 className="text-center mb-4">Login</h3>
+          {error && <div className="alert alert-danger">{error}</div>}
           <form onSubmit={handleLogin}>
             <div className="mb-3">
               <label htmlFor="email" className="form-label">Email address</label>
@@ -32,6 +56,7 @@ const LoginPage = () => {
                 type="email"
                 className="form-control"
                 id="email"
+                name="email"
                 placeholder="Enter your email"
                 required
               />
@@ -42,20 +67,21 @@ const LoginPage = () => {
                 type="password"
                 className="form-control"
                 id="password"
+                name="password"
                 placeholder="Enter your password"
                 required
               />
             </div>
             <div className="d-grid">
-              <button type="submit" className="btn btn-primary">
-                Login
+              <button type="submit" className="btn btn-primary" disabled={loading}>
+                {loading ? 'Logging in...' : 'Login'}
               </button>
             </div>
           </form>
           <div className="text-center mt-3">
-            <a href="#!" className="text-decoration-none">Forgot Password?</a>
+            <Link to="#" className="text-decoration-none">Forgot Password?</Link>
             <br />
-            <a href="#!" className="text-decoration-none">Create an Account</a>
+            <Link to="/CreateNewUser" className="text-decoration-none">Create an Account</Link>
           </div>
         </div>
       </div>

@@ -86,17 +86,17 @@ function TodoThreeStages() {
   const fetchTasks = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/tasks");
-      if (!response.ok) throw new Error("Failed to fetch tasks");
-      const data = await response.json();
-      setTasks(data);
+        const response = await fetch("http://localhost:5000/tasks");
+        if (!response.ok) throw new Error("Unable to fetch tasks. Please try again.");
+        const data = await response.json();
+        setTasks(data);
     } catch (err) {
-      console.error(err);
-      setError(err.message);
+        setError(err.message); // Set a user-readable error message
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+};
+
 
   const handleTaskCreated = (newTask) => {
     setTasks((prevTasks) => [...prevTasks, newTask]);
