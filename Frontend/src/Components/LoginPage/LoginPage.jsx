@@ -13,13 +13,13 @@ const LoginPage = () => {
     setLoading(true);
 
     const userData = {
-      username: event.target.email.value,
+      email: event.target.email.value,
       password: event.target.password.value,
     };
-    
+    console.log(userData)
 
     try {
-      const response = await fetch("http://localhost:5000/login", {
+      const response = await fetch("http://localhost:1100/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

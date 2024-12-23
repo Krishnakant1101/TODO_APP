@@ -17,27 +17,25 @@ function Header() {
     };
 
     return (
-        <AppBar position="static" sx={{ backgroundColor: '#8a8f42' }}>
+        <AppBar position="static" sx={{ backgroundColor: '#253042',  height:"80px"}}>
             <Toolbar>
                 {/* Logo */}
                 <img
                     src="https://cdn-icons-png.flaticon.com/256/6782/6782237.png"
                     alt="Logo"
-                    height="50px"
+                    height="100px"
                     style={{
                         marginRight: '20px',
                         filter: 'sepia(50%) brightness(1.2) hue-rotate(40deg)',
                     }}
                 />
 
-                {/* App Title */}
-                <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                    MyApp
-                </Typography>
+                
+               
 
                 {/* Navigation Links */}
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <NavLink
+                <Box sx={{ display: 'flex', alignItems: 'center',marginLeft:"200px",fontSize:"20px" ,justifyContent:"space-around",width:"100%" }}>
+                    <NavLink id='navlink'
                         to="/"
                         className={({ isActive }) => (isActive ? 'navLink active' : 'navLink')}
                     >

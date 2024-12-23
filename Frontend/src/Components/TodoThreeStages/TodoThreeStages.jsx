@@ -14,7 +14,7 @@ function Task({ task, onEdit, onDelete }) {
 
   return (
     <div ref={dragRef} className="p-3 mb-2 border rounded shadow-sm" style={{
-      background : task.stage==="todo" ? "rgb(144 218 245)" :(task.stage==='in-process')?"rgb(237 202 56)":"rgb(150 199 134)"
+      background : task.stage==="todo" ? "rgb(144 218 245)" :(task.stage==='in-progress')?"rgb(237 202 56)":"rgb(150 199 134)"
     }}
            >
       <h4 className="text-center">{task.title}</h4>
@@ -86,7 +86,7 @@ function TodoThreeStages() {
   const fetchTasks = async () => {
     setLoading(true);
     try {
-        const response = await fetch("http://localhost:5000/tasks");
+        const response = await fetch("http://localhost:1100/api/tasks");
         if (!response.ok) throw new Error("Unable to fetch tasks. Please try again.");
         const data = await response.json();
         setTasks(data);
@@ -103,7 +103,7 @@ function TodoThreeStages() {
   };
   const handleDrop = (id, newStage) => {
   
-    fetch(`http://localhost:5000/tasks/${id}`, {
+    fetch(`http://localhost:1100/api/tasks/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ stage: newStage }), 
@@ -134,7 +134,7 @@ function TodoThreeStages() {
   
 
   const handleDelete = (id) => {
-    fetch(`http://localhost:5000/tasks/${id}`, { method: "DELETE" })
+    fetch(`http://localhost:1100/api/tasks/${id}`, { method: "DELETE" })
       .then((res) => {
         if (!res.ok) throw new Error("Failed to delete task");
         setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
@@ -147,7 +147,8 @@ function TodoThreeStages() {
   };
 
   const handleSaveEdit = (editedTask) => {
-    fetch(`http://localhost:5000/tasks/${editedTask.id}`, {
+    console.log(editedTask)
+    fetch(`http://localhost:1100/api/tasks`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(editedTask),
@@ -169,7 +170,7 @@ function TodoThreeStages() {
 
   const stages = {
     todo: tasks.filter((task) => task.stage === "todo"),
-    "in-process": tasks.filter((task) => task.stage === "in-process"),
+    "in-progress": tasks.filter((task) => task.stage === "in-progress"),
     complete: tasks.filter((task) => task.stage === "complete"),
   };
 
@@ -275,12 +276,12 @@ function TodoThreeStages() {
                   className={`card-header ${
                     stage === "todo"
                       ? "bg-info"
-                      : stage === "in-process"
+                      : stage === "in-progress"
                       ? "bg-warning"
                       : "bg-success"
                   } text-white`}
                 >
-                  <h5 className="text-center" style={{color:"#010308"}}>{(stage!=="in-process")? stage.replace("-", " ").toUpperCase():"IN-PROGRESS"}</h5>
+                  <h5 className="text-center" style={{color:"#010308"}}>{(stage!=="in-progress")? stage.replace("-", " ").toUpperCase():"IN-PROGRESS"}</h5>
                 </div>
                 <Stage
                   stage={stage}

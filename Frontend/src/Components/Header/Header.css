@@ -2,20 +2,13 @@
     margin:0;
     padding:0;
 }
-.navOptions a{
+#navlink{
     text-decoration: none;
-    color:white;
-    margin-left: 5px;
-    
-    
 }
 
-.navOptions a:hover {
-    color: rgb(223, 149, 93) !important;
-  }
   
 .active{
-    color:rgb(4, 74, 34);
+    color:rgb(255, 125, 19);
 }
 .navOptions{
     display: flex;
