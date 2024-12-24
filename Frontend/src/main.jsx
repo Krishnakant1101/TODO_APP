@@ -18,11 +18,18 @@ const Router = createBrowserRouter([
     children: [
       {
         path: '',
-        element: <TodoApp />,
+        element: (
+          <ProtectedRoute>
+        <TodoApp />
+        </ProtectedRoute>),
       },
       {
         path: '/CounterApp',
-        element: <CounterApp />,
+        element: 
+        (
+        <ProtectedRoute>
+        <CounterApp />
+        </ProtectedRoute>),
       },
       {
         path: '/UserDataTable',

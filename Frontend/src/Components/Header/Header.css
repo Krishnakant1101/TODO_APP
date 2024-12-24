@@ -2,14 +2,26 @@
     margin:0;
     padding:0;
 }
-#navlink{
-    text-decoration: none;
-}
+
 
   
 .active{
-    color:rgb(255, 125, 19);
+    text-decoration: none;
+    color:#ff7d13;
 }
+.navlink{
+    color:rgb(255, 255, 255);
+    text-decoration: none;;
+}
+
+.navlink:hover{
+    color:#ff7d13;
+}
+.active:hover{
+    color:#ff7d13;
+}
+
+
 .navOptions{
     display: flex;
     width:50%;

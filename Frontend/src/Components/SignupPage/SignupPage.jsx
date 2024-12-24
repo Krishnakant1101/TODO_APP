@@ -26,7 +26,7 @@ const SignupPage = () => {
     setError(null);
 
     try {
-      const response = await fetch("http://localhost:5000/SignupPage", {
+      const response = await fetch("http://localhost:1100/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

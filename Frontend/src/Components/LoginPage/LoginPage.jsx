@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import './LoginPage.css';
+import React, { useState, useRef, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../App';
 
 const LoginPage = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const formRef = useRef(null);
   const navigate = useNavigate();
+  const { setIsAuthenticated } = useContext(AuthContext);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -16,7 +18,6 @@ const LoginPage = () => {
       email: event.target.email.value,
       password: event.target.password.value,
     };
-    console.log(userData)
 
     try {
       const response = await fetch("http://localhost:1100/auth/login", {
@@ -30,13 +31,17 @@ const LoginPage = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Save JWT token to localStorage
         localStorage.setItem('userToken', data.token);
-        navigate('/'); // Redirect to the homepage
+        localStorage.setItem('firstName', data.firstname);
+
+        setIsAuthenticated(true); // Update auth state
+        if (formRef.current) formRef.current.reset();
+        navigate('/');
       } else {
         setError(data.message || 'Login failed. Please try again.');
       }
     } catch (err) {
+      console.error('Login error:', err);
       setError('An error occurred. Please try again later.');
     } finally {
       setLoading(false);
@@ -49,7 +54,7 @@ const LoginPage = () => {
         <div className="card-body">
           <h3 className="text-center mb-4">Login</h3>
           {error && <div className="alert alert-danger">{error}</div>}
-          <form onSubmit={handleLogin}>
+          <form onSubmit={handleLogin} ref={formRef}>
             <div className="mb-3">
               <label htmlFor="email" className="form-label">Email address</label>
               <input
@@ -79,7 +84,7 @@ const LoginPage = () => {
             </div>
           </form>
           <div className="text-center mt-3">
-            <Link to="#" className="text-decoration-none">Forgot Password?</Link>
+            <Link to="/forgot-password" className="text-decoration-none">Forgot Password?</Link>
             <br />
             <Link to="/CreateNewUser" className="text-decoration-none">Create an Account</Link>
           </div>

@@ -7,27 +7,16 @@ import Footer from './Components/Footer/Footer';
 export const AuthContext = createContext();
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const navigate = useNavigate();
-
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   // Check authentication status on app load
   useEffect(() => {
     const token = localStorage.getItem('userToken');
-    if (token) {
-      setIsAuthenticated(true);
-    } else {
-      setIsAuthenticated(false);
-    }
+    setIsAuthenticated(!!token); // Set isAuthenticated based on the token's existence
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem('userToken'); // Remove the token
-    setIsAuthenticated(false); // Update auth state
-    navigate('/Login'); // Redirect to login page
-  };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, handleLogout }}>
+    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated}}>
       <>
         <Header />
         <Outlet />
